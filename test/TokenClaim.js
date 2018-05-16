@@ -34,40 +34,36 @@ contract('TokenClaim', function(accounts) {
         
     })
     
-    // it("Should make first account an owner", async function() {
-    //     assert.equal(await tokenClaim.owner(), owner, "The owner of the tokenClaim is not accounts[0]")
-    //     var address = await tokenClaim.address;
-    //     assert.equal(await lToken.owner(), address, "The owner of the lToken is not TokenClaim");
-    // });
+    it("Should make first account an owner", async function() {
+        assert.equal(await tokenClaim.owner(), owner, "The owner of the tokenClaim is not accounts[0]")
+        var address = await tokenClaim.address;
+        assert.equal(await lToken.owner(), address, "The owner of the lToken is not TokenClaim");
+    });
 
-    // it("Owner should be able to add easter-egg", async function(){
-    //     await tokenClaim.addCollectible(web3.fromAscii(someHash));
-    //     let challenges = await tokenClaim.collectiblesPendingToClaim();
-
-    //     assert.equal(challenges.valueOf(), 1, "The owner account does not have the minted collectible")
-    // });
+    it("Owner should be able to add easter-egg", async function(){
+        await tokenClaim.addCollectible(somePreImage);
+        let challenges = await tokenClaim.collectiblesPendingToClaim();
+        assert.equal(challenges.valueOf(), 1, "The owner account does not have the minted collectible")
+    });
     
-    // it("Others should not be able to add easter-egg", async () => {
-    //     await tokenClaim.transferOwnership(notOwner);
-    //     let contractOwner = await tokenClaim.owner();
-    //     await assert.notEqual(contractOwner, owner);
-    //     await assertRevert(tokenClaim.addCollectible(web3.fromAscii(someHash)));
-    // });
+    it("Others should not be able to add easter-egg", async () => {
+        await tokenClaim.transferOwnership(notOwner);
+        let contractOwner = await tokenClaim.owner();
+        await assert.notEqual(contractOwner, owner);
+        await assertRevert(tokenClaim.addCollectible(somePreImage));
+    });
     
-    // it("When an invalid pre-image is provided collectible should not be minted ", async () => {
-    //     let preImage = "esta NO es la frase magica";
-    //     await tokenClaim.addCollectible(web3.fromAscii(someHash));
-    //     await tokenClaim.claimcollectible(owner, preImage, defaultURI);
-    //     let balance = await lToken.totalSupply();
-    //     assert.equal(balance.valueOf(), 0, "The collectible was minted");
-    // });
+    it("When an invalid pre-image is provided collectible should not be minted ", async () => {
+        let preImage = "esta NO es la frase magica";
+        await tokenClaim.addCollectible(somePreImage);
+        await tokenClaim.claimCollectible(owner, preImage, defaultURI);
+        let balance = await lToken.totalSupply();
+        assert.equal(balance.valueOf(), 0, "The collectible was minted");
+    });
     
     it("When a valid pre-image is provided collectible should be minted ", async () => {
-        console.log("hash :" + someHash);
-
-        // await tokenClaim.addCollectible(web3.fromAscii(someHash,32));
-        await tokenClaim.addCollectible(convertHash(someHash));
-        await tokenClaim.claimcollectible(owner, somePreImage, defaultURI);
+        await tokenClaim.addCollectible(somePreImage);
+        await tokenClaim.claimCollectible(owner, somePreImage, defaultURI);
         let balance = await lToken.totalSupply();
         assert.equal(balance.valueOf(), 1, "The collectible was not properly minted");
         assert.equal(await lToken.tokenURI(0), defaultURI);
@@ -75,25 +71,24 @@ contract('TokenClaim', function(accounts) {
         assert.equal(challenges.valueOf(), 0);
     });
     
-    // it("collectible should not be minted twice", async () => {
-    //     await tokenClaim.addCollectible(web3.fromAscii(someHash));
-    //     await tokenClaim.claimcollectible(owner, somePreImage, defaultURI);
-    //     let balance = await lToken.totalSupply();
-    //     assert.equal(balance.valueOf(), 1, "The collectible was not properly minted");
-    //     await tokenClaim.claimcollectible( notOwner,somePreImage, defaultURI);
-    //     balance = await lToken.totalSupply();
-    //     assert.equal(balance.valueOf(), 1, "Extra collectible was minted");
-    // });
+    it("collectible should not be minted twice", async () => {
+        await tokenClaim.addCollectible(somePreImage);
+        await tokenClaim.claimCollectible(owner, somePreImage, defaultURI);
+        let balance = await lToken.totalSupply();
+        assert.equal(balance.valueOf(), 1, "The collectible was not properly minted");
+        await tokenClaim.claimCollectible( notOwner,somePreImage, defaultURI);
+        balance = await lToken.totalSupply();
+        assert.equal(balance.valueOf(), 1, "Extra collectible was minted");
+    });
     
-    // it("When multiple collectible are added anyone should be claimable", async () => {
-    //     await tokenClaim.addCollectible(web3.fromAscii(someHash));
-    //     let hash = createKeccakHash('keccak256').update("this is not the collectible you are looking for").digest('hex');
-    //     await tokenClaim.addCollectible(web3.fromAscii(hash));
-    //     let balance = await tokenClaim.collectiblesPendingToClaim();
-    //     assert.equal(balance.valueOf(), 2, "The challenges where not added");
-    //     await tokenClaim.claimcollectible(owner,somePreImage, defaultURI);
-    //     balance = await lToken.totalSupply();
-    //     assert.equal(balance.valueOf(), 1, "The collectible was not properly minted");
-    //     assert.equal(await lToken.tokenURI(0), defaultURI);
-    // });
+    it("When multiple collectible are added anyone should be claimable", async () => {
+        await tokenClaim.addCollectible(somePreImage);
+        await tokenClaim.addCollectible("this is not the collectible you are looking for");
+        let balance = await tokenClaim.collectiblesPendingToClaim();
+        assert.equal(balance.valueOf(), 2, "The challenges where not added");
+        await tokenClaim.claimCollectible(owner,somePreImage, defaultURI);
+        balance = await lToken.totalSupply();
+        assert.equal(balance.valueOf(), 1, "The collectible was not properly minted");
+        assert.equal(await lToken.tokenURI(0), defaultURI);
+    });
 });

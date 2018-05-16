@@ -11,12 +11,9 @@ import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 contract TokenClaim is Ownable {
     // Store hash to validate preImages 
     bytes32[] private hashArray_;
-    // Should be private?
-    LeToken public leToken_;
+    // Zeppelin collectibles
+    LeToken private leToken_;
 
-    function getHash() public returns (bytes32){
-        return hashArray_[0];
-    }
     /**
      * @dev Constructor function
      * @param _leToken Contract address for the collectibles contract
@@ -27,10 +24,11 @@ contract TokenClaim is Ownable {
 
     /**
      * @dev Add challenge (hash) to internal array and use default image
-     * @param _hash should be a 32 byte long array in hexa
+     * @param _preImage string to get hash
      */
-    function addCollectible(bytes32 _hash) public onlyOwner{
-        hashArray_.push(_hash);
+    function addCollectible(string _preImage) public onlyOwner{
+        bytes32 hash = keccak256(_preImage);
+        hashArray_.push(hash);
     }
 
     /**
@@ -65,7 +63,7 @@ contract TokenClaim is Ownable {
      * @param _collectibleURI URI conforming to EIP 1047: Token Metadata JSON Schema 
      * see (https://eips.ethereum.org/EIPS/eip-1047)
      */
-    function claimcollectible(address _to, string _preImage, string _collectibleURI) public {
+    function claimCollectible(address _to, string _preImage, string _collectibleURI) public {
         /// First we get the hash of the pre image
         bytes32 hash = keccak256(_preImage);
         /// We compare with the array
