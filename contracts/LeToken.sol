@@ -19,7 +19,7 @@ contract LeToken is ERC721Token, Ownable {
     /** 
     * @dev we set the uri on mint to prevent further changes
     * @param _to address the beneficiary that will own the minted collectible
-    * @param _uri string URI confirming to EIP 1047: Token Metadata JSON Schema 
+    * @param _uri string URI conforming to EIP 1047: Token Metadata JSON Schema 
     * see (https://eips.ethereum.org/EIPS/eip-1047)
     */
     function mint(address _to, string _uri) public onlyOwner{
