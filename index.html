@@ -23,7 +23,22 @@
   <button id="claim-token">Send</button>
   <pre id="token"></pre>
 
+  <h3>I hereby add the following challenge</h3>
+  <label for="pre-image">Pre-image</label>
+  <div>
+    <input class="form-control" id="new-pre-image">
+  </div>
 
+  <label for="new-pre-image-uri" >Challenge URI</label>
+  <div>
+    <input class="form-control" id="new-pre-image-uri" value="http://ledomain.com:8080/collectibleData/default.json">
+  </div>
+  <button id="add-token">Add</button>
+
+  <button id="polePosition">Show results</button>
+
+  <!--Add text result-->
+  <pre id="token"></pre>
   <!-- Helpers -->
   <!-- JQuery will help us extract data from json files -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
