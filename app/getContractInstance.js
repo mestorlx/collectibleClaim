@@ -3,12 +3,12 @@ import TokenClaimArtifact from "../build/contracts/TokenClaim.json";
 import LeTokenArtifact from "../build/contracts/LeToken.json";
 import addresses from "../addresses.json";
 import Web3 from "web3";
-import { provider, web3, owner } from './constants'
-// export var tokenClaimInstance;
-// export var leTokenInstance;
+import { provider, web3, owner, setup } from './constants'
 
 
+// Set contract instances
 export default async function getContractInstance() {
+  await setup();
   const tokenClaimContract = contract(TokenClaimArtifact);
   const leTokenContract = contract(LeTokenArtifact);
   web3.eth.defaultAccount = owner;
