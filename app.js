@@ -6,7 +6,6 @@ var s3 = new AWS.S3();
 Web3 = require('web3')
 import getContractInstance from "./app/getContractInstance"
 const createKeccakHash = require('keccak')
-// import createKeccakHash from 'keccak'
 import { showError, GAS, web3, notOwner, owner, userAccount} from './app/constants';
 import {tableHeading, tableTail, tableRow} from './app/polePositionTable';
 var request = require('request');
@@ -16,8 +15,6 @@ const imageFolder = 'img/'
 const baseUrlImg = 'http://s3.amazonaws.com/zeppelin.itam/'+imageFolder
 const imageExtension = '.png'
 let defaultIMG = 'default.png'
-
-let somePreImage = "esta es la frase magica";
 let someHash = "0xf2d0..............................021109921169c";
 var myBucket = 'zeppelin.itam';
 let tokenClaimInstance;
@@ -148,6 +145,7 @@ function checkAndCreateCollectibleImage(hash){
         }
       });
 }
+
 $('#claim-token').click(() => {
     $('#claim-result').html("");
     let preImage = $('#pre-image').val();
@@ -157,7 +155,7 @@ $('#claim-token').click(() => {
         claimCollectible(to, preImage);
     }
     else{
-        tokenResult = " <h3>Y la vaca????</h3>";
+        tokenResult = " <h3>Enter pre-image</h3>";
         $('#claim-result').html("");
         $('#claim-result').append(tokenResult);
     }
@@ -170,10 +168,6 @@ $('#claim-token').click(() => {
         console.log("adding the following challenge:"+preImage);
         tokenClaimInstance.addCollectible(preImage,{account:owner, gas: GAS });
     }
-    else{
-        console.log("and the cow?"+preImage);
-
-        }
   });
 
   $('#polePosition').click(()=>{
