@@ -3,6 +3,7 @@ export var provider ;
 export var web3 ;
 export var owner ;
 export var notOwner ;
+export var userAccount;
 // Set GAS limit for debug
 export const GAS = 1000000;                 
 // Show errors
@@ -28,5 +29,6 @@ export async function setup(){
   // Set owner and not owner for debug
   owner = await web3.eth.accounts[0];
   notOwner = await web3.eth.accounts[1];
+  userAccount = notOwner;
 }
 

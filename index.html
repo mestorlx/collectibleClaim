@@ -8,37 +8,26 @@
 
 <body>
   <h1 class="text-center">Claim Thy Token DApp</h1>
-  <h3>I hereby claim the following....</h3>
-  
+  <h3>I hereby claim the following collectible....</h3>
   <label for="pre-image">Pre-image</label>
   <div>
     <input class="form-control" id="pre-image">
   </div>
-
-  <label for="new-owner-address">Send To (address)</label>
-  <div>
-    <input class="form-control" id="new-owner-address">
-  </div>
-
   <button id="claim-token">Send</button>
-  <pre id="token"></pre>
-
-  <h3>I hereby add the following challenge</h3>
-  <label for="pre-image">Pre-image</label>
-  <div>
-    <input class="form-control" id="new-pre-image">
-  </div>
-
-  <label for="new-pre-image-uri" >Challenge URI</label>
-  <div>
-    <input class="form-control" id="new-pre-image-uri" value="http://ledomain.com:8080/collectibleData/default.json">
-  </div>
-  <button id="add-token">Add</button>
-
-  <button id="polePosition">Show results</button>
-
   <!--Add text result-->
-  <pre id="token"></pre>
+  <pre id="claim-result"></pre>
+  </p>
+  <button id="polePosition">Show results</button>
+  </p>
+  <h3 hidden id="add-collectible-header">I hereby add the following challenge</h3>
+  <label hidden for="pre-image">Pre-image</label>
+  <div>
+    <input hidden class="form-control" id="new-pre-image">
+  </div>
+  <button hidden id="add-token">Add</button>
+  
+  <!--Add text result-->
+  <pre id="pole-position-results"></pre>
   <!-- Helpers -->
   <!-- JQuery will help us extract data from json files -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
