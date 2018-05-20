@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "aws": "0.0.3-2",
+    "aws-sdk": "^2.243.1",
+    "babel-core": "^6.26.3",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",

@@ -1,10 +1,6 @@
-var AWS = require('aws-sdk');
-AWS.config = new AWS.Config();
-AWS.config.accessKeyId = "AKIAIXFPOBNATMQVPW4Q";
-AWS.config.secretAccessKey = "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";
-var s3 = new AWS.S3();
 Web3 = require('web3')
 import getContractInstance from "./app/getContractInstance"
+import {s3} from './aws';
 const createKeccakHash = require('keccak')
 import { showError, GAS, web3, notOwner, owner, userAccount} from './app/constants';
 import {tableHeading, tableTail, tableRow} from './app/polePositionTable';
