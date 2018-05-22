@@ -1,8 +1,8 @@
 Web3 = require('web3')
-import getContractInstance from "./app/getContractInstance"
+import {getContractInstance, owner} from "./app/getContractInstance"
 import {s3} from './aws';
 const createKeccakHash = require('keccak')
-import { showError, GAS, web3, notOwner, owner, userAccount} from './app/constants';
+import { showError, GAS, web3, userAccount} from './app/constants';
 import {tableHeading, tableTail, tableRow} from './app/polePositionTable';
 var request = require('request');
 
@@ -42,14 +42,6 @@ function createURI(preImage){
 
 /// Wait until page is loaded before getting instances.
 window.addEventListener('load', function() {
-    console.log("Page loaded");
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    if (typeof window.web3 !== 'undefined') {
-      console.log('MetaMask is running');
-    } else {
-      console.log('MetaMask is not running');
-    }
-    // setup contract instances
     setup();
 });
 
@@ -145,7 +137,7 @@ function checkAndCreateCollectibleImage(hash){
 $('#claim-token').click(() => {
     $('#claim-result').html("");
     let preImage = $('#pre-image').val();
-    let to = notOwner;
+    let to = userAccount;
     var tokenResult = "";
     if(preImage){
         claimCollectible(to, preImage);
@@ -158,7 +150,6 @@ $('#claim-token').click(() => {
   });
 
   $('#add-token').click(()=>{
-    let owner = tokenClaimInstance.owner();
     let preImage = $('#new-pre-image').val();
     if(preImage){
         console.log("adding the following challenge:"+preImage);
@@ -171,6 +162,8 @@ $('#claim-token').click(() => {
   });
 
   function setComponentsVisibility(){
+      console.log('User: ',userAccount);
+      console.log('Owner: ',owner);
       if(userAccount == owner){
           console.log("its owner. Show add collectible menu");
           var h = document.getElementById("add-collectible-header");
