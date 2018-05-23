@@ -4,3 +4,4 @@ node_modules/*
 build/*
 bundle.js
 addresses.json
+aws.js
