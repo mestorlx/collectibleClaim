@@ -4,16 +4,16 @@ import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../node_modules/zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 
 /**
- * @title LeToken
+ * @title ZeppelinEasterEggsCollectibles
  * @dev very unique and rare ERC721 compliant token example to test the TokenClaim contract
  */
-contract LeToken is ERC721Token, Ownable {
+contract ZeppelinEasterEggsCollectibles is ERC721Token, Ownable {
     // non-divisible token
     uint8 public constant decimals = 0;
     /**
     * @dev Constructor function 
     */
-    function LeToken() public ERC721Token("le'Token", "LTA"){
+    function ZeppelinEasterEggsCollectibles() public ERC721Token("Zeppelin Easter Eggs Collectibles", "ZEEC"){
 
     }
     /** 

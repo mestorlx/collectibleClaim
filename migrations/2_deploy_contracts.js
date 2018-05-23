@@ -1,16 +1,16 @@
 const TokenClaim = artifacts.require('TokenClaim.sol')
-const LeToken = artifacts.require('LeToken.sol')
+const ZeppelinEasterEggsCollectibles = artifacts.require('ZeppelinEasterEggsCollectibles.sol')
 const fs = require("fs");
 
 
 module.exports = async function(deployer) {
-  deployer.deploy(LeToken).then(function (){
-    return deployer.deploy(TokenClaim,LeToken.address).then(function(){
+  deployer.deploy(ZeppelinEasterEggsCollectibles).then(function (){
+    return deployer.deploy(TokenClaim,ZeppelinEasterEggsCollectibles.address).then(function(){
       var address = TokenClaim.address;
-      let lToken = LeToken.at(LeToken.address);
-      lToken.transferOwnership(address);
+      let zeec = ZeppelinEasterEggsCollectibles.at(ZeppelinEasterEggsCollectibles.address);
+      zeec.transferOwnership(address);
       const addresses = {
-        lTokenAddress: LeToken.address,
+        zeecAddress: ZeppelinEasterEggsCollectibles.address,
         tokenClaimAddress: TokenClaim.address
       };
       fs.writeFile("./addresses.json",JSON.stringify(addresses),function(err) {

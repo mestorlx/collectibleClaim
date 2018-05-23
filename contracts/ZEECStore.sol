@@ -1,6 +1,6 @@
 pragma solidity ^0.4.18;
 
-import "./LeToken.sol";
+import "./ZeppelinEasterEggsCollectibles.sol";
 import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
@@ -8,18 +8,18 @@ import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
  * Store Zeppelin ERC721 crypto collectibles and grant ownership to anyone that
  * can provide the pre-image of a hash.
  */
-contract TokenClaim is Ownable {
+contract ZEECStore is Ownable {
     // Store hash to validate preImages 
     bytes32[] private hashArray_;
     // Zeppelin collectibles
-    LeToken private leToken_;
+    ZeppelinEasterEggsCollectibles private ZeppelinEasterEggsCollectibles_;
 
     /**
      * @dev Constructor function
-     * @param _leToken Contract address for the collectibles contract
+     * @param _ZeppelinEasterEggsCollectibles Contract address for the collectibles contract
      */
-    function TokenClaim (address _leToken)public  {
-        leToken_ = LeToken(_leToken);   
+    function ZEECStore (address _ZeppelinEasterEggsCollectibles)public  {
+        ZeppelinEasterEggsCollectibles_ = ZeppelinEasterEggsCollectibles(_ZeppelinEasterEggsCollectibles);   
     }
 
     /**
@@ -70,7 +70,7 @@ contract TokenClaim is Ownable {
         for (uint256 i = 0; i < hashArray_.length; i++){
             //if(hash == hashArray[i]){
             if(hashCompare(hashArray_[i],hash )){  
-                leToken_.mint(_to,_collectibleURI);
+                ZeppelinEasterEggsCollectibles_.mint(_to,_collectibleURI);
                 /// we remove the hash from the arry. We move the last element to override.
                 hashArray_[i] = hashArray_[hashArray_.length-1];
                 /// we remove last element
