@@ -13,13 +13,13 @@ const imageExtension = '.png'
 let defaultIMG = 'default.png'
 let someHash = "0xf2d0..............................021109921169c";
 var myBucket = 'zeppelin.itam';
-let tokenClaimInstance;
-let leTokenInstance;
+let storeInstance;
+let zeecInstance;
 
 async function setup(){
     let instances = await getContractInstance();
-    tokenClaimInstance = instances[1];
-    leTokenInstance = instances[0];    
+    storeInstance = instances[1];
+    zeecInstance = instances[0];    
     setComponentsVisibility();
 }
 
@@ -46,8 +46,8 @@ window.addEventListener('load', function() {
 });
 
 async function getPolePosition(){
-    let pending = await tokenClaimInstance.collectiblesPendingToClaim();
-    let claimed = await leTokenInstance.totalSupply();
+    let pending = await storeInstance.collectiblesPendingToClaim();
+    let claimed = await zeecInstance.totalSupply();
     console.log("Collectibles pending to claim:"+pending.valueOf()+" collectibles claimed:"+claimed);
     $('#pole-position-results').html("");
     let table = tableHeading;
@@ -59,7 +59,7 @@ async function getPolePosition(){
     table+=tableTail;
     $('#pole-position-results').append(table);
     for(var i = 0; i < claimed.valueOf();i++){
-        let uri = await leTokenInstance.tokenURI(i);
+        let uri = await zeecInstance.tokenURI(i);
         console.log("will fetch the following collectible uri:"+uri);
         request({url:uri},function (error, response, body) {
             //     console.log('error:', error); 
@@ -87,13 +87,13 @@ async function getPolePosition(){
 async function claimCollectible(to, preImage) {
     // We compare the collectible supply to verify if the actual collectible 
     // was minted. 
-    let supply = await leTokenInstance.totalSupply();
+    let supply = await zeecInstance.totalSupply();
     let hash = createKeccakHash('keccak256').update(preImage).digest('hex');
     let claim = { preImage: preImage, hash: hash };
     console.log(`Claiming ${JSON.stringify(claim)}`);
     let uri = baseURL+hash+'.json';
-    await tokenClaimInstance.claimCollectible(to,preImage,uri,{gas:GAS}); 
-    let newSupply = await leTokenInstance.totalSupply();
+    await storeInstance.claimCollectible(to,preImage,uri,{gas:GAS}); 
+    let newSupply = await zeecInstance.totalSupply();
     let tokenResult;
     if(newSupply.valueOf() > supply.valueOf()){
         createURI(preImage);
@@ -153,11 +153,11 @@ $('#claim-token').click(() => {
     let preImage = $('#new-pre-image').val();
     if(preImage){
         console.log("adding the following challenge:"+preImage);
-        tokenClaimInstance.addCollectible(preImage,{account:owner, gas: GAS });
+        storeInstance.addCollectible(preImage,{account:owner, gas: GAS });
     }
   });
 
-  $('#polePosition').click(()=>{
+  $('#get-pole-position').click(()=>{
     getPolePosition();
   });
 
@@ -175,5 +175,4 @@ $('#claim-token').click(() => {
           var b = document.getElementById("add-token");
           b.style.display = "block";
       }
-
   }

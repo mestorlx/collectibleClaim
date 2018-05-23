@@ -1,6 +1,6 @@
 import contract from "truffle-contract";
-import TokenClaimArtifact from "../build/contracts/TokenClaim.json";
-import LeTokenArtifact from "../build/contracts/LeToken.json";
+import ZEECStoreArtifact from "../build/contracts/ZEECStore.json";
+import ZEECArtifact from "../build/contracts/ZeppelinEasterEggsCollectibles.json";
 import addresses from "../addresses.json";
 import Web3 from "web3";
 import { provider, web3, setup, userAccount } from './constants'
@@ -9,17 +9,17 @@ export var owner;
 // Set contract instances
 export async function getContractInstance() {
   await setup();
-  const tokenClaimContract = contract(TokenClaimArtifact);
-  const leTokenContract = contract(LeTokenArtifact);
+  const storeContract = contract(ZEECStoreArtifact);
+  const zeecContract = contract(ZEECArtifact);
   web3.eth.defaultAccount = userAccount;
-  tokenClaimContract.setProvider(provider);
-  leTokenContract.setProvider(provider);
-  console.log("TokenClaim address:" + addresses['tokenClaimAddress']);
-  console.log("LeToken address:" + addresses['lTokenAddress']);
-  const tokenClaimInstance = await tokenClaimContract.at(addresses['tokenClaimAddress']);
-  const leTokenInstance = await leTokenContract.at(addresses['lTokenAddress']);
-  owner = await tokenClaimInstance.owner.call();
+  storeContract.setProvider(provider);
+  zeecContract.setProvider(provider);
+  console.log("store address:" + addresses['storeAddress']);
+  console.log("zeec address:" + addresses['zeecAddress']);
+  const storeInstance = await storeContract.at(addresses['storeAddress']);
+  const zeecInstance = await zeecContract.at(addresses['zeecAddress']);
+  owner = await storeInstance.owner.call();
   console.log("The owner is:");
   console.log(owner);
-  return [leTokenInstance, tokenClaimInstance];
+  return [zeecInstance, storeInstance];
 }
