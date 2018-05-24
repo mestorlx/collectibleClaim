@@ -10,7 +10,8 @@ const baseURL = 'http://s3.amazonaws.com/zeppelin.itam/'
 const imageFolder = 'img/'
 const baseUrlImg = 'http://s3.amazonaws.com/zeppelin.itam/'+imageFolder
 const imageExtension = '.png'
-let defaultIMG = 'default.png'
+let defaultIMG = 'default'+imageExtension
+let unclaimedIMG = baseUrlImg+'unclaimed'+imageExtension
 let someHash = "0xf2d0..............................021109921169c";
 var myBucket = 'zeppelin.itam';
 let storeInstance;
@@ -51,9 +52,9 @@ async function getPolePosition(){
     console.log("Collectibles pending to claim:"+pending.valueOf()+" collectibles claimed:"+claimed);
     $('#pole-position-results').html("");
     let table = tableHeading;
-    table+='<tr><td align="center" colspan="3">"Collectibles pending to claim"</td></tr>';
+    table+='<tr><td colspan="3">"Collectibles pending to claim"</td></tr>';
     for(var i = 0; i < pending.valueOf();i++){
-        table+=tableRow('<img height="64" width="64" src="'+defaultIMG+'" alt=""></img>',someHash,"Not claimed yet");
+        table+=tableRow('<img src="'+unclaimedIMG+'" alt=""></img>',someHash,"Not claimed yet");
     }
     table+='<tr><td align="center" colspan="3">"Collectibles claimed"</td></tr>';
     table+=tableTail;
@@ -75,7 +76,7 @@ async function getPolePosition(){
                 row.appendChild(col3);
                 console.log('Using the following image');
                 console.log(j['image']);
-                col.innerHTML = '<img height="64" width="64" src="'+j['image']+'" alt=""></img>'
+                col.innerHTML = '<img src="'+j['image']+'" alt=""></img>'
                 col2.innerHTML = j['name'];
                 col3.innerHTML = j['description']; 
                 var table = document.getElementById("pole-position"); 
@@ -100,7 +101,7 @@ async function claimCollectible(to, preImage) {
         tokenResult = "<h3>YAY!<h3>";
     }
     else{
-        tokenResult = " <h3>You suck!</h3>";
+        tokenResult = " <h3>Boo!</h3>";
     }
     $('#claim-result').html("");
     $('#claim-result').append(tokenResult);
