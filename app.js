@@ -16,6 +16,7 @@ let someHash = "0xf2d0..............................021109921169c";
 var myBucket = 'zeppelin.itam';
 let storeInstance;
 let zeecInstance;
+var filter;
 
 async function setup(){
     let instances = await getContractInstance();
@@ -94,6 +95,15 @@ async function claimCollectible(to, preImage) {
     console.log(`Claiming ${JSON.stringify(claim)}`);
     let uri = baseURL+hash+'.json';
     await storeInstance.claimCollectible(to,preImage,uri,{gas:GAS}); 
+    filter = web3.eth.filter('latest', function(error, result){
+        if (!error){
+            console.log("CollectibleClaim Block Mined:");
+            checkIfCollectibleWasMinted(supply, preImage);
+        }
+      });
+}
+
+async function checkIfCollectibleWasMinted(supply, preImage){
     let newSupply = await zeecInstance.totalSupply();
     let tokenResult;
     if(newSupply.valueOf() > supply.valueOf()){
@@ -105,6 +115,7 @@ async function claimCollectible(to, preImage) {
     }
     $('#claim-result').html("");
     $('#claim-result').append(tokenResult);
+    filter.stopWatching();
 }
 
 function checkAndCreateCollectibleImage(hash){
