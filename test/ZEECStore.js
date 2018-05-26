@@ -29,7 +29,7 @@ contract('ZEECStore', function(accounts) {
     });
 
     it("Owner should be able to add easter-egg", async function(){
-        await store.addCollectible(somePreImage);
+        await store.addCollectible(web3.sha3(somePreImage));
         let challenges = await store.collectiblesPendingToClaim();
 
         assert.equal(challenges.valueOf(), 1, "The owner account does not have the minted collectible")
@@ -40,12 +40,12 @@ contract('ZEECStore', function(accounts) {
         let contractOwner = await store.owner();
 
         await assert.notEqual(contractOwner, owner);
-        await assertRevert(store.addCollectible(somePreImage));
+        await assertRevert(store.addCollectible(web3.sha3(somePreImage)));
     });
     
     it("When an invalid pre-image is provided collectible should not be minted ", async () => {
         let preImage = "esta NO es la frase magica";
-        await store.addCollectible(somePreImage);
+        await store.addCollectible(web3.sha3(somePreImage));
         await store.claimCollectible(owner, preImage, defaultURI);
         let balance = await zeec.totalSupply();
 
@@ -53,7 +53,7 @@ contract('ZEECStore', function(accounts) {
     });
     
     it("When a valid pre-image is provided collectible should be minted ", async () => {
-        await store.addCollectible(somePreImage);
+        await store.addCollectible(web3.sha3(somePreImage));
         await store.claimCollectible(owner, somePreImage, defaultURI);
         let balance = await zeec.totalSupply();
 
@@ -64,7 +64,7 @@ contract('ZEECStore', function(accounts) {
     });
     
     it("collectible should not be minted twice", async () => {
-        await store.addCollectible(somePreImage);
+        await store.addCollectible(web3.sha3(somePreImage));
         await store.claimCollectible(owner, somePreImage, defaultURI);
         let balance = await zeec.totalSupply();
 
@@ -75,8 +75,8 @@ contract('ZEECStore', function(accounts) {
     });
     
     it("When multiple collectible are added anyone should be claimable", async () => {
-        await store.addCollectible(somePreImage);
-        await store.addCollectible("this is not the collectible you are looking for");
+        await store.addCollectible(web3.sha3(somePreImage));
+        await store.addCollectible(web3.sha3("this is not the collectible you are looking for"));
         let balance = await store.collectiblesPendingToClaim();
 
         assert.equal(balance.valueOf(), 2, "The challenges where not added");
@@ -85,4 +85,5 @@ contract('ZEECStore', function(accounts) {
         assert.equal(balance.valueOf(), 1, "The collectible was not properly minted");
         assert.equal(await zeec.tokenURI(0), defaultURI);
     });
+    
 });

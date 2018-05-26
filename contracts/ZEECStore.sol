@@ -21,14 +21,12 @@ contract ZEECStore is Ownable {
     function ZEECStore (address _ZeppelinEasterEggsCollectibles)public  {
         ZeppelinEasterEggsCollectibles_ = ZeppelinEasterEggsCollectibles(_ZeppelinEasterEggsCollectibles);   
     }
-
     /**
      * @dev Add challenge (hash) to internal array and use default image
-     * @param _preImage string to get hash
+     * @param _hash sha3 hash
      */
-    function addCollectible(string _preImage) public onlyOwner{
-        bytes32 hash = keccak256(_preImage);
-        hashArray_.push(hash);
+    function addCollectible(bytes32 _hash) public onlyOwner{
+        hashArray_.push(_hash);
     }
 
     /**
