@@ -165,7 +165,7 @@ $('#claim-token').click(() => {
     let preImage = $('#new-pre-image').val();
     if(preImage){
         console.log("adding the following challenge:"+preImage);
-        storeInstance.addCollectible(preImage,{account:owner, gas: GAS });
+        storeInstance.addCollectible(web3.sha3(preImage),{account:owner, gas: GAS });
     }
   });
 
